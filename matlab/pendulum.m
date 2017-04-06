@@ -5,12 +5,12 @@ l = 1;                  % length of the pendulum [m]
 g = 9.81;               % gravitational acceleration [m/s^2]
 A = 0.1;                % amplitude of the oscillations [m]
 w = 50;                 % frequency of the oscillations [rad/s]
-b = 15 * 2*pi/180;       % tilt of the oscillation plane
+b = 10 * 2*pi/180;       % tilt of the oscillation plane
 
 t = [0 : 0.001 : 10];
 
 %% Initial conditions
-x0 = [0.3 0];
+x0 = [0.1 0];
 
 %% Solution
 options = odeset('AbsTol', 1e-6, 'RelTol', 1e-6);
