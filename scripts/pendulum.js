@@ -24,6 +24,7 @@ var Pendulum = (function() {
     
     // state
     var x = x0;
+    var rx = 0, ry = 0;
     var A = 0.0, w = 0.0, b = 0.0, d = 0.0;
     
     // solver
@@ -44,28 +45,17 @@ var Pendulum = (function() {
     this.setD = function(z) { d = z; };
     this.getLength = function() { return l; };
     
-    this.getRx = function() { return 0; };
-    this.getRy = function() { return 0; };
+    this.getRx = function() { return rx; };
+    this.getRy = function() { return ry; };
     
     
     //! Calculate derivatives of the state variables
     this.dxfun = function(t, u, x) {
       var dx = [0, 0];
       
-      // state variables and inputs
-      var theta = x[0];
-      var dtheta = x[1];
-      
-      A = Amax * u[0];
-      w = wmax * u[1];
-      b = 2*Math.PI * (u[2] - 0.5);
-      d = u[3];
-      
       // calculate derivatives
-      dx[0] = dtheta;
-      dx[1] = (-3*A*w*w * Math.sin(w*t) * Math.sin(b-theta) + g*Math.sin(theta)) / (2.0*l) - d * dtheta;
-      
-      //console.log(w, g, dx, g*Math.sin(theta) / (2.0*l));
+      dx[0] = x[1];
+      dx[1] = (-3*u[0]*u[1]*u[1] * Math.sin(u[1]*t) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - u[3] * x[1];
       
       return dx;
     };
@@ -73,12 +63,20 @@ var Pendulum = (function() {
     
     //! Calculates next step state variables
     this.step = function(t, u, dt) {
+      A = Amax * u[0];
+      w = wmax * u[1];
+      b = 2*Math.PI * (u[2] - 0.5);
+      d = u[3];
+      
       // solve for new x state
-      x = solver.solve(this.dxfun, t, u, x, dt);
+      x = solver.solve(this.dxfun, t, [A, w, b, d], x, dt);
 
       // take care of bounds
       if (x[0] < -Math.PI) x[0] = 2*Math.PI - x[0];
       if (x[0] > Math.PI) x[0] = -2*Math.PI + x[0];
+      
+      rx = A * Math.sin(b) * Math.sin(w*t);
+      ry = A * Math.cos(b) * Math.sin(w*t);
       
       return x;
     };

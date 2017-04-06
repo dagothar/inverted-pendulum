@@ -1,11 +1,9 @@
 var Render = (function() {
   
-  function Render(layer1, layer2) {
+  function Render(layer1) {
     
     var layer1 = layer1;
-    var layer2 = layer2;
     var ctx1 = layer1.getContext('2d');
-    var ctx2 = layer2.getContext('2d');
     
     var width = layer1.width;
     var height = layer1.height;
@@ -15,7 +13,7 @@ var Render = (function() {
     
     
     //! Draws the pendulum.
-    function drawPendulum(ctx, x, y, rx, ry, length, theta, scale) {
+    function drawPendulum(ctx, x, y, rx, ry, length, theta) {
       ctx.save();
       
       ctx.lineWidth = 3;
@@ -24,8 +22,9 @@ var Render = (function() {
       
       ctx.beginPath();
       ctx.moveTo(rx, -ry);
-      ctx.lineTo(rx + length*scale*Math.sin(theta), -ry - length*scale*Math.cos(theta));
+      ctx.lineTo(rx + length*Math.sin(theta), -ry - length*Math.cos(theta));
       ctx.stroke();
+      ctx.closePath();
       
       ctx.restore();
     };
@@ -35,20 +34,52 @@ var Render = (function() {
     this.render = function(model) {
       // clear 
       ctx1.clearRect(0, 0, width, height);
-      ctx2.clearRect(0, 0, width, height);
       
       // setup
-      var scale = 100.0 / model.getLength();      
+      var scale = 150.0 / model.getLength();
+      
+      /* draw cart */
+      ctx1.save();
+        ctx1.lineWidth = 3;
+        ctx1.translate(cx, cy);
+        ctx1.rotate(model.getB());
+        ctx1.beginPath();
+        ctx1.rect(-3, -scale*model.getA()/2-3, 6, scale*model.getA()+6);
+        ctx1.closePath();
+        ctx1.stroke();
+        
+        ctx1.setLineDash([3, 12]);
+        ctx1.beginPath();
+        ctx1.moveTo(0, -300);
+        ctx1.lineTo(0, 300);
+        ctx1.closePath();
+        ctx1.stroke();
+      ctx1.restore();
       
       /* draw pendulum */
-      drawPendulum(ctx1, cx, cy, model.getRx(), model.getRy(), model.getLength(), model.getTheta(), scale);
+      drawPendulum(ctx1, cx, cy, scale*model.getRx(), scale*model.getRy(), scale*model.getLength(), model.getTheta());  
       
-      /* copy layer 1 to layer 2 */
-      ctx2.drawImage(layer1, 0, 0);
-      ctx1.clearRect(0, 0, width, height);
+      /* draw angle indicator */
+      ctx1.save();
+        ctx1.lineWidth = 1;
+        ctx1.setLineDash([5, 10]);
+        ctx1.beginPath();
+        ctx1.moveTo(cx, cy);
+        ctx1.lineTo(cx+300*Math.sin(model.getTheta()), cy-300*Math.cos(model.getTheta()));
+        ctx1.closePath();
+        ctx1.stroke();
+      ctx1.restore();    
       
-      /* draw ... */
-      
+      /* draw grid */
+      ctx1.save();
+        ctx1.lineWidth = 2;
+        ctx1.setLineDash([2, 4]);
+        
+        ctx1.beginPath(); ctx1.arc(cx, cy, 200, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+        ctx1.beginPath(); ctx1.arc(cx, cy, 250, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+        ctx1.beginPath(); ctx1.arc(cx, cy, 300, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+
+      ctx1.restore();   
       
     };
   };

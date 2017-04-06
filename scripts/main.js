@@ -11,16 +11,15 @@ function clone(obj) {
 $(document).ready(function() {
   
   var layer1 = $('#layer1').get(0);
-  var layer2 = $('#layer2').get(0);
   
   var defaultParams = {
     theta0:   0.0,
     dtheta0:  0.0,
     l:        0.5,
     g:        9.81,
-    Amax:     0.1,
+    Amax:     0.05,
     wmax:     50.0,
-    dmax:     0.0
+    dmax:     0.01
   };
   
   var t = 0.0;
@@ -64,7 +63,7 @@ $(document).ready(function() {
     
     $('.slider-A').val(0);
     $('.slider-w').val(0);
-    $('.slider-b').val(0);
+    $('.slider-b').val(500);
     $('.slider-d').val(0);
     
     t = 0.0;
@@ -76,7 +75,7 @@ $(document).ready(function() {
     var solver = new RK4();
     
     pendulum = new Pendulum(params, x0, solver);
-    render = new Render(layer1, layer2);
+    render = new Render(layer1);
     update();
   };
   
