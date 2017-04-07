@@ -39,25 +39,10 @@ var Render = (function() {
       var maxUef = model.getUefMax();
       
       ctx.save();
-      
-      ctx.strokeStyle = 'rgb(255, 0, 0)';
-      ctx.fillStyle = 'rgb(255, 0, 0)';
+
       ctx.font = '20px Sans';
       ctx.lineWidth = 2;
       ctx.translate(x, y);
-      
-      // effective potential
-      ctx.beginPath();
-      var dt = 2*Math.PI / segments;
-      for (var t = 0.0; t <= 2*Math.PI; t += dt) {
-        var uef = model.getUef(t);
-        var ruef = r + height * uef / maxUef;
-        
-        ctx.lineTo(ruef*Math.sin(t), -ruef*Math.cos(t));
-      };
-      ctx.closePath();
-      ctx.stroke();
-      ctx.fillText('Uef', -250, 275);
       
       // gravitational potential
       ctx.strokeStyle = 'rgb(0, 255, 0)';
@@ -75,6 +60,23 @@ var Render = (function() {
       ctx.stroke();
       ctx.fillText('Ug', -250, 250);
       
+      // effective potential
+      ctx.strokeStyle = 'rgb(255, 0, 0)';
+      ctx.fillStyle = 'rgb(255, 0, 0)';
+      ctx.beginPath();
+      var dt = 2*Math.PI / segments;
+      for (var t = 0.0; t <= 2*Math.PI; t += dt) {
+        var uef = model.getUef(t);
+        var ruef = r + height * uef / maxUef;
+        
+        ctx.lineTo(ruef*Math.sin(t), -ruef*Math.cos(t));
+      };
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fillText('Uef', -250, 275);
+      
+      
+      
       ctx.setLineDash([5, 10]);
       ctx.strokeStyle = 'rgb(255, 0, 0)';
       ctx.beginPath(); ctx.arc(0, 0, r + height * model.getUef(model.getTheta()) / maxUef, 0, 2*Math.PI); ctx.closePath(); ctx.stroke();
@@ -86,7 +88,9 @@ var Render = (function() {
     //! Renders the model.
     this.render = function(model) {
       // clear 
-      ctx1.clearRect(0, 0, width, height);
+      ctx1.fillStyle = "white";
+      ctx1.fillRect(0, 0, width, height);
+      ctx1.fillStyle = "black";
       
       ctx1.font = '20px Sans';
       var Rinner = 175;
