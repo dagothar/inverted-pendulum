@@ -32,14 +32,14 @@
             <form class="form-horizontal">
               
               <div class="form-group">
-                <label class="control-label col-sm-6">θ0 [rad]</label>
+                <label class="control-label col-sm-6">θ<sub>0</sub> [rad]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-theta0" value="0">
                 </div>
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">dθ0 [rad/s]</label>
+                <label class="control-label col-sm-6">dθ<sub>0</sub> [rad/s]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-dtheta0" value="0">
                 </div>
@@ -60,28 +60,28 @@
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">g [m/s^2]</label>
+                <label class="control-label col-sm-6">g [m/s<sup>2</sup>]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-g" value="9.81">
                 </div>
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">Amax [m]</label>
+                <label class="control-label col-sm-6">A<sub>max</sub> [m]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-Amax" value="0.1">
                 </div>
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">wmax [rad/s]</label>
+                <label class="control-label col-sm-6">w<sub>max</sub> [rad/s]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-wmax" value="50">
                 </div>
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">dmax [1/s]</label>
+                <label class="control-label col-sm-6">d<sub>max</sub> [1/s]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-dmax" value="0">
                 </div>
@@ -122,25 +122,25 @@
             
             <!-- amplitude slider -->
             <div class="form-group">
-              <label>amplitude:</label>
+              <label>amplitude:</label> <span class="amplitude pull-right">0</span>
               <input type="range" min="0" val="0" max="1000" class="slider-A"/>
             </div>
             
             <!-- frequency slider -->
             <div class="form-group">
-              <label>frequency:</label>
+              <label>frequency:</label> <span class="omega pull-right">0</span>
               <input type="range" min="0" val="0" max="1000" class="slider-w"/>
             </div>
             
             <!-- angle slider -->
             <div class="form-group">
-              <label>angle (β):</label>
+              <label>angle (β): </label> <span class="beta pull-right">0</span>
               <input type="range" min="0" val="500" max="1000" class="slider-b"/>
             </div>
             
             <!-- damping slider -->
             <div class="form-group">
-              <label>damping:</label>
+              <label>damping:</label> <span class="damping pull-right">0</span>
               <input type="range" min="0" val="0" max="1000" class="slider-d"/>
             </div>
             

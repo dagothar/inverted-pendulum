@@ -71,6 +71,10 @@ var Render = (function() {
       ctx.stroke();
       ctx.fillText('Ug', -250, 250);
       
+      ctx.setLineDash([5, 10]);
+      ctx.strokeStyle = 'rgb(255, 0, 0)';
+      ctx.beginPath(); ctx.arc(0, 0, r + height * model.getUef(model.getTheta()) / maxUef, 0, 2*Math.PI); ctx.closePath(); ctx.stroke();
+      
       ctx.restore();
     };
     

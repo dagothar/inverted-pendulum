@@ -35,6 +35,8 @@ $(document).ready(function() {
     $('#time').text(t.toFixed(2) + ' [s]');
     $('#theta').text(pendulum.getTheta().toFixed(3) + ' [rad]');
     
+    $('.beta').text(pendulum.getB().toFixed(3));
+    
     render.render(pendulum);
   };
   
@@ -92,7 +94,7 @@ $(document).ready(function() {
   function step() {
     var A = 0.001 * $('.slider-A').val();
     var w = 0.001 * $('.slider-w').val();
-    var b = 0.001 * $('.slider-b').val();
+    var b = Math.PI * (0.002 * $('.slider-b').val()-1);
     var d = 0.001 * $('.slider-d').val();
     
     dt = 0.005;
@@ -146,9 +148,9 @@ $(document).ready(function() {
     }
   });
   
-  $('.slider-z3').on('input change', function() {
+  $('.slider-b').on('input change', function() {
     if (!running) {
-      tank.setZ3(0.01 * $(this).val());
+      pendulum.setB(Math.PI * (0.002 * $(this).val()-1));
       update();
     }
   });

@@ -59,13 +59,13 @@ var Pendulum = (function() {
     
     //! Calculates the effective potential as the function of angle.
     this.getUef = function(psi) {
-      return 0.5*g*l*m*Math.cos(psi) - 3.0/32.0 * A*A*m*w*w*Math.cos(2*(b-psi));
+      return 0.5*g*l*m*Math.cos(psi) - 3.0/32.0 * A*A*m*w*w*Math.cos(2*(psi-b));
     };
     
     
     //! Calculates the absolute maximum of the Uef.
     this.getUefMax = function() {
-      return 0.5*g*l+ 3.0/32.0 * A*A*w*w;
+      return 0.5*g*l*m+ 3.0/32.0 * A*A*w*w*m;
     };
     
     
@@ -75,7 +75,7 @@ var Pendulum = (function() {
       
       // calculate derivatives
       dx[0] = x[1];
-      dx[1] = (-3*u[0]*u[1]*u[1] * Math.sin(u[1]*t) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - u[3] * x[1];
+      dx[1] = (-3*u[0]*u[1]*u[1] * Math.sin(u[1]*t) * Math.sin(u[2]-x[0]) + 3*g*Math.sin(x[0])) / (2.0*l) - u[3] * x[1];
       
       return dx;
     };
@@ -85,7 +85,7 @@ var Pendulum = (function() {
     this.step = function(t, u, dt) {
       A = Amax * u[0];
       w = wmax * u[1];
-      b = 2*Math.PI * (u[2] - 0.5);
+      b = u[2];
       d = u[3];
       
       // solve for new x state
