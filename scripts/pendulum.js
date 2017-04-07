@@ -98,7 +98,6 @@ var Pendulum = (function() {
       
       // calculate derivatives
       dx[0] = x[1];
-      console.log(kpull, dpull, u[4], u[5]);
       dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0*u[3]*x[1])/(m*l*l) + 3.0*u[4]*(kpull*(u[5]-x[0]) - dpull*x[1])/(m*l*l);
       
       return dx;
@@ -117,8 +116,7 @@ var Pendulum = (function() {
       var pull = u[4];
       var angle = u[5];
       
-      console.log(kpull, dpull);
-      
+ 
       // solve for new x state
       x = solver.solve(this.dxfun, t, [A, w, b, d, pull, angle], x, dt);
 
