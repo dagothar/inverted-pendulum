@@ -20,7 +20,7 @@ $(document).ready(function() {
     g:        9.81,
     Amax:     0.1,
     wmax:     70.0,
-    dmax:     1
+    dmax:     0.1
   };
   
   var t = 0.0;
