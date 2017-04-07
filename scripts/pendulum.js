@@ -38,13 +38,13 @@ var Pendulum = (function() {
     this.getTheta = function() { return x[0]; };
     this.getThetaDot = function() { return x[1]; };
     this.getA = function() { return A; };
-    this.setA = function(z) { A = z; };
+    this.setA = function(z) { A = Amax * z; };
     this.getW = function() { return w; };
-    this.setW = function(z) { w = z; };
+    this.setW = function(z) { w = wmax * z; };
     this.getB = function() { return b; };
     this.setB = function(z) { b = z; };
     this.getD = function() { return d; };
-    this.setD = function(z) { d = z; };
+    this.setD = function(z) { d = dmax * z; };
     this.getLength = function() { return l; };
     
     this.getRx = function() { return rx; };
@@ -86,7 +86,7 @@ var Pendulum = (function() {
       A = Amax * u[0];
       w = wmax * u[1];
       b = u[2];
-      d = u[3];
+      d = dmax * u[3];
       
       // solve for new x state
       x = solver.solve(this.dxfun, t, [A, w, b, d], x, dt);

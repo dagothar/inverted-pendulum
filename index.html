@@ -74,7 +74,7 @@
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">w<sub>max</sub> [rad/s]</label>
+                <label class="control-label col-sm-6">ω<sub>max</sub> [rad/s]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-wmax" value="50">
                 </div>
@@ -122,13 +122,13 @@
             
             <!-- amplitude slider -->
             <div class="form-group">
-              <label>amplitude:</label> <span class="amplitude pull-right">0</span>
+              <label>amplitude (A):</label> <span class="amplitude pull-right">0</span>
               <input type="range" min="0" val="0" max="1000" class="slider-A"/>
             </div>
             
             <!-- frequency slider -->
             <div class="form-group">
-              <label>frequency:</label> <span class="omega pull-right">0</span>
+              <label>frequency (ω):</label> <span class="omega pull-right">0</span>
               <input type="range" min="0" val="0" max="1000" class="slider-w"/>
             </div>
             
@@ -154,8 +154,8 @@
           <div class="panel-heading">Results</div>
           
           <div class="panel-body">
-            <p>t <span id="time" class="pull-right">0 [s]</span></p>
-            <p>θ <span id="theta" class="pull-right text-primary">0 [rad]</span></p>
+            <p><b>t</b><span id="time" class="pull-right">0 [s]</span></p>
+            <p><b>θ</b> <span id="theta" class="pull-right text-primary">0 [rad]</span></p>
             <!--p>T <span id="temperature" class="pull-right text-danger">0 [C]</span></p>
             <br/>
             <p>q1 <span id="q1" class="pull-right text-primary">0 [kg/s]</span></p>

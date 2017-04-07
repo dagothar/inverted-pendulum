@@ -18,9 +18,9 @@ $(document).ready(function() {
     m:        1.0,
     l:        0.5,
     g:        9.81,
-    Amax:     0.05,
-    wmax:     50.0,
-    dmax:     0.01
+    Amax:     0.1,
+    wmax:     70.0,
+    dmax:     0.1
   };
   
   var t = 0.0;
@@ -35,7 +35,10 @@ $(document).ready(function() {
     $('#time').text(t.toFixed(2) + ' [s]');
     $('#theta').text(pendulum.getTheta().toFixed(3) + ' [rad]');
     
+    $('.amplitude').text(pendulum.getA().toFixed(3));
+    $('.omega').text(pendulum.getW().toFixed(3));
     $('.beta').text(pendulum.getB().toFixed(3));
+    $('.damping').text(pendulum.getD().toFixed(3));
     
     render.render(pendulum);
   };
@@ -80,6 +83,12 @@ $(document).ready(function() {
     
     pendulum = new Pendulum(params, x0, solver);
     render = new Render(layer1);
+    
+    pendulum.setA(0.001 * $('.slider-A').val());
+    pendulum.setW(0.001 * $('.slider-w').val());
+    pendulum.setB(Math.PI * (0.002 * $('.slider-b').val()-1));
+    pendulum.setD(0.001 * $('.slider-d').val());
+    
     update();
   };
   
@@ -134,16 +143,16 @@ $(document).ready(function() {
   });
   
   
-  $('.slider-z1').on('input change', function() {
+  $('.slider-A').on('input change', function() {
     if (!running) {
-      tank.setZ1(0.01 * $(this).val());
+      pendulum.setA(0.001 * $(this).val());
       update();
     }
   });
   
-  $('.slider-z2').on('input change', function() {
+  $('.slider-w').on('input change', function() {
     if (!running) {
-      tank.setZ2(0.01 * $(this).val());
+      pendulum.setW(0.001 * $(this).val());
       update();
     }
   });
@@ -155,9 +164,9 @@ $(document).ready(function() {
     }
   });
   
-  $('.slider-heater').on('input change', function() {
+  $('.slider-d').on('input change', function() {
     if (!running) {
-      tank.setHeater(0.01 * $(this).val());
+      pendulum.setD(0.001 * $(this).val());
       update();
     }
   });
