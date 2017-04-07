@@ -30,7 +30,8 @@ $(document).ready(function() {
     Amax:     0.1,
     wmax:     70.0,
     dmax:     0.1,
-    k:        1.0
+    kpull:    25.0,
+    dpull:    5.0
   };
   
   var t = 0.0;
@@ -40,7 +41,8 @@ $(document).ready(function() {
   var render = undefined;
   var stepTimer = undefined;
   var running = false;
-  var torque = 0.0;
+  var pull = 0;
+  var pullAngle = 0.0;
   
   
   //! Updates the model info
@@ -73,7 +75,8 @@ $(document).ready(function() {
     params.Amax = parseFloat($('#parameter-Amax').val());
     params.wmax = parseFloat($('#parameter-wmax').val());
     params.dmax = parseFloat($('#parameter-dmax').val());
-    //params.k = parseFloat($('#parameter-k').val());
+    params.kpull = parseFloat($('#parameter-kpull').val());
+    params.dpull = parseFloat($('#parameter-dpull').val());
     
     return params;
   };
@@ -88,7 +91,8 @@ $(document).ready(function() {
 	  $('#parameter-Amax').val(defaultParams.Amax);
 	  $('#parameter-wmax').val(defaultParams.wmax);
 	  $('#parameter-dmax').val(defaultParams.dmax);
-	  $('#parameter-k').val(defaultParams.k);
+	  $('#parameter-kpull').val(defaultParams.kpull);
+	  $('#parameter-dpull').val(defaultParams.dpull);
   };
   
   
@@ -139,11 +143,10 @@ $(document).ready(function() {
     var w = 0.001 * $('.slider-w').val();
     var b = Math.PI * (0.002 * $('.slider-b').val()-1);
     var d = 0.001 * $('.slider-d').val();
-    var M = torque; // torque
     
     var dts = dt / tscale;
     t += dts;
-    pendulum.step(t, [A, w, b, d, M], dts);
+    pendulum.step(t, [A, w, b, d, pull, pullAngle], dts);
     
     update();
   };  
@@ -229,20 +232,7 @@ $(document).ready(function() {
     return Math.atan2(x, y);
   };
   
-  
-  function calculateTorque(pos) {
-    var theta = pendulum.getTheta();
-    var ang = pos2angle(pos);
-    
-    // find out the dtheta...
-    if ((ang - theta) < Math.PI) {
-      return ang - theta;
-    } else {
-      return 0.0;
-    };
-  };
-  
-  
+   
   function pullPendulum(e) {
     var pos = getMousePos(e, layer1);
     var angle = pos2angle(pos);
@@ -251,6 +241,9 @@ $(document).ready(function() {
     if (!running) {
       pendulum.setTheta(angle);
       update();
+    } else {
+      pull = 1;
+      pullAngle = angle;
     }
   };
   
@@ -265,14 +258,14 @@ $(document).ready(function() {
   $('#layer1').mouseup(function(e) {
     $(this).unbind('mousemove');
     
-    torque = 0.0;
+    pull = 0;
   });
   
   
   $('#layer1').mouseout(function(e) {
     $(this).unbind('mousemove');
     
-    torque = 0.0;
+    pull = 0;
   });
   
 });

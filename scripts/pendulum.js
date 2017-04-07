@@ -9,7 +9,8 @@ var Pendulum = (function() {
     var Amax;
     var wmax;
     var dmax;
-    var k;
+    var kpull;
+    var dpull;
     
     // parameters
     this.setParameters = function(params) {
@@ -21,7 +22,8 @@ var Pendulum = (function() {
       Amax = params.Amax;
       wmax = params.wmax;
       dmax = params.dmax;
-      k = params.k;
+      kpull = params.kpull;
+      dpull = params.dpull;
     };
     
     this.setParameters(params);
@@ -89,14 +91,15 @@ var Pendulum = (function() {
     
     
     /** Calculate derivatives of the state variables
-     * State inputs are: [A, w, b, d, pull angle ]
+     * State inputs are: [A, w, b, d, pull, angle ]
     */
     this.dxfun = function(t, u, x) {
       var dx = [0, 0];
       
       // calculate derivatives
       dx[0] = x[1];
-      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0*u[3]*x[1])/(m*l*l) + 0*k*(u[4]-x[0])/(m*l*l);
+      console.log(kpull, dpull, u[4], u[5]);
+      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0*u[3]*x[1])/(m*l*l) + 3.0*u[4]*(kpull*(u[5]-x[0]) - dpull*x[1])/(m*l*l);
       
       return dx;
     };
@@ -104,11 +107,6 @@ var Pendulum = (function() {
     
     //! Calculates next step state variables
     this.step = function(t, u, dt) {
-      //A = Amax * u[0];
-      //w = wmax * u[1];
-      //b = u[2];
-      //d = dmax * u[3];
-      
       T = t;
       
       this.setA(u[0]);
@@ -116,10 +114,13 @@ var Pendulum = (function() {
       this.setB(u[2]);
       this.setD(u[3]);
       
-      var M = u[4];
+      var pull = u[4];
+      var angle = u[5];
+      
+      console.log(kpull, dpull);
       
       // solve for new x state
-      x = solver.solve(this.dxfun, t, [A, w, b, d, M], x, dt);
+      x = solver.solve(this.dxfun, t, [A, w, b, d, pull, angle], x, dt);
 
       // take care of bounds
       if (x[0] < -Math.PI) x[0] = 2*Math.PI - x[0];
