@@ -3,6 +3,7 @@ var Pendulum = (function() {
   function Pendulum(params, x0, solver) {
     var theta0;
     var dtheta0;
+    var m;
     var l;
     var g;
     var Amax;
@@ -13,6 +14,7 @@ var Pendulum = (function() {
     this.setParameters = function(params) {
       theta0 = params.theta0;
       dtheta0 = params.dtheta0;
+      m = params.m;
       l = params.l;
       g = params.g;
       Amax = params.Amax;
@@ -47,6 +49,24 @@ var Pendulum = (function() {
     
     this.getRx = function() { return rx; };
     this.getRy = function() { return ry; };
+    
+    
+    //! Calculates the potential as the function of angle.
+    this.getUg = function(psi) {
+      return 0.5*g*l*m*Math.cos(psi);
+    };
+    
+    
+    //! Calculates the effective potential as the function of angle.
+    this.getUef = function(psi) {
+      return 0.5*g*l*m*Math.cos(psi) - 3.0/32.0 * A*A*m*w*w*Math.cos(2*(b-psi));
+    };
+    
+    
+    //! Calculates the absolute maximum of the Uef.
+    this.getUefMax = function() {
+      return 0.5*g*l+ 3.0/32.0 * A*A*w*w;
+    };
     
     
     //! Calculate derivatives of the state variables

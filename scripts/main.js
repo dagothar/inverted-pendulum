@@ -15,6 +15,7 @@ $(document).ready(function() {
   var defaultParams = {
     theta0:   0.0,
     dtheta0:  0.0,
+    m:        1.0,
     l:        0.5,
     g:        9.81,
     Amax:     0.05,
@@ -43,6 +44,7 @@ $(document).ready(function() {
     
     params.theta0 = parseFloat($('#parameter-theta0').val());
     params.dtheta0 = parseFloat($('#parameter-dtheta0').val());
+    params.m = parseFloat($('#parameter-m').val());
     params.l = parseFloat($('#parameter-l').val());
     params.g = parseFloat($('#parameter-g').val());
     params.Amax = parseFloat($('#parameter-Amax').val());
@@ -61,10 +63,10 @@ $(document).ready(function() {
     $('.button-stop').hide();
     $('.form-control').prop('disabled', false);
     
-    $('.slider-A').val(0);
-    $('.slider-w').val(0);
+    $('.slider-A').val(1000);
+    $('.slider-w').val(1000);
     $('.slider-b').val(500);
-    $('.slider-d').val(0);
+    $('.slider-d').val(1000);
     
     t = 0.0;
     
@@ -162,6 +164,7 @@ $(document).ready(function() {
     if (!running) {
       $('#parameter-theta0').val(defaultParams.theta0);
       $('#parameter-dtheta0').val(defaultParams.dtheta0);
+      $('#parameter-m').val(defaultParams.m);
       $('#parameter-l').val(defaultParams.l);
       $('#parameter-g').val(defaultParams.g);
       $('#parameter-Amax').val(defaultParams.Amax);

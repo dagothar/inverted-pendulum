@@ -32,16 +32,23 @@
             <form class="form-horizontal">
               
               <div class="form-group">
-                <label class="control-label col-sm-6">theta0 [rad]</label>
+                <label class="control-label col-sm-6">θ0 [rad]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-theta0" value="0">
                 </div>
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">dtheta0 [rad/s]</label>
+                <label class="control-label col-sm-6">dθ0 [rad/s]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-dtheta0" value="0">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label col-sm-6">m [kg]</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="parameter-m" value="0.5">
                 </div>
               </div>
               
@@ -127,7 +134,7 @@
             
             <!-- angle slider -->
             <div class="form-group">
-              <label>angle:</label>
+              <label>angle (β):</label>
               <input type="range" min="0" val="500" max="1000" class="slider-b"/>
             </div>
             
@@ -148,7 +155,7 @@
           
           <div class="panel-body">
             <p>t <span id="time" class="pull-right">0 [s]</span></p>
-            <p>theta <span id="theta" class="pull-right text-primary">0 [rad]</span></p>
+            <p>θ <span id="theta" class="pull-right text-primary">0 [rad]</span></p>
             <!--p>T <span id="temperature" class="pull-right text-danger">0 [C]</span></p>
             <br/>
             <p>q1 <span id="q1" class="pull-right text-primary">0 [kg/s]</span></p>
