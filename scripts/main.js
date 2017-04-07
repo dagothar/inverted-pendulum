@@ -56,7 +56,7 @@ $(document).ready(function() {
     $('.omega').text(pendulum.getW().toFixed(3) + ' [rad/s]');
     $('.beta').text(pendulum.getB().toFixed(3) + ' [rad]');
     $('.damping').text(pendulum.getD().toFixed(3) + ' [kg m²/s]');
-    $('.dt').text('x ' + tscale.toFixed(3));
+    $('.dt').text('1 : ' + tscale.toFixed(2));
     
     render.render(pendulum);
   };
@@ -94,6 +94,7 @@ $(document).ready(function() {
     $('.slider-dt').val(300);
     
     t = 0.0;
+    tscale = 1.0;
     
     var params = getParameters();
     
