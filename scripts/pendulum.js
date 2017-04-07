@@ -9,6 +9,7 @@ var Pendulum = (function() {
     var Amax;
     var wmax;
     var dmax;
+    var k;
     
     // parameters
     this.setParameters = function(params) {
@@ -20,6 +21,7 @@ var Pendulum = (function() {
       Amax = params.Amax;
       wmax = params.wmax;
       dmax = params.dmax;
+      k = params.k;
     };
     
     this.setParameters(params);
@@ -59,6 +61,8 @@ var Pendulum = (function() {
     this.setB = function(z) { b = z; };
     this.getD = function() { return d; };
     this.setD = function(z) { d = dmax * z; };
+    this.getK = function() { return k; };
+    this.setK = function(z) { k = z; };
     this.getLength = function() { return l; };
     
     this.getRx = function() { return rx; };
@@ -79,7 +83,7 @@ var Pendulum = (function() {
     
     //! Calculates the absolute maximum of the Uef.
     this.getUefMax = function() {
-      return 0.5*g*l*m+ 3.0/32.0 * A*A*w*w*m;
+      return 0.5*g*l*m+ 3.0/32.0 * Amax*Amax*wmax*wmax*m;
     };
     
     
@@ -89,7 +93,7 @@ var Pendulum = (function() {
       
       // calculate derivatives
       dx[0] = x[1];
-      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0 * u[3] * x[1]) / (m*l*l);
+      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) + (3.0 * (k*u[4] - u[3] * x[1])) / (m*l*l);
       
       return dx;
     };
@@ -109,8 +113,10 @@ var Pendulum = (function() {
       this.setB(u[2]);
       this.setD(u[3]);
       
+      var M = u[4];
+      
       // solve for new x state
-      x = solver.solve(this.dxfun, t, [A, w, b, d], x, dt);
+      x = solver.solve(this.dxfun, t, [A, w, b, d, M], x, dt);
 
       // take care of bounds
       if (x[0] < -Math.PI) x[0] = 2*Math.PI - x[0];

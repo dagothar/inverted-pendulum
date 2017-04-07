@@ -8,6 +8,15 @@ function clone(obj) {
 }
 
 
+function getMousePos(e, client) {
+  var rect = client.getBoundingClientRect();
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+};
+
+
 $(document).ready(function() {
   
   var layer1 = $('#layer1').get(0);
@@ -20,7 +29,8 @@ $(document).ready(function() {
     g:        9.81,
     Amax:     0.1,
     wmax:     70.0,
-    dmax:     0.1
+    dmax:     0.1,
+    k:        1.0
   };
   
   var t = 0.0;
@@ -28,6 +38,7 @@ $(document).ready(function() {
   var render = undefined;
   var stepTimer = undefined;
   var running = false;
+  var torque = 0.0;
   
   
   //! Updates the model info
@@ -59,6 +70,7 @@ $(document).ready(function() {
     params.Amax = parseFloat($('#parameter-Amax').val());
     params.wmax = parseFloat($('#parameter-wmax').val());
     params.dmax = parseFloat($('#parameter-dmax').val());
+    //params.k = parseFloat($('#parameter-k').val());
     
     return params;
   };
@@ -109,10 +121,11 @@ $(document).ready(function() {
     var w = 0.001 * $('.slider-w').val();
     var b = Math.PI * (0.002 * $('.slider-b').val()-1);
     var d = 0.001 * $('.slider-d').val();
+    var M = torque; // torque
     
     dt = 0.005;
     t += dt;
-    pendulum.step(t, [A, w, b, d], dt);
+    pendulum.step(t, [A, w, b, d, M], dt);
     
     update();
   };  
@@ -175,6 +188,7 @@ $(document).ready(function() {
     }
   });
   
+  
   $('.button-params').click(function() {
     if (!running) {
       $('#parameter-theta0').val(defaultParams.theta0);
@@ -185,7 +199,59 @@ $(document).ready(function() {
       $('#parameter-Amax').val(defaultParams.Amax);
       $('#parameter-wmax').val(defaultParams.wmax);
       $('#parameter-dmax').val(defaultParams.dmax);
+      $('#parameter-k').val(defaultParams.k);
     }
   });
+  
+  
+  /*function pos2angle(pos) {
+    var cx = layer1.width/2;
+    var cy = layer1.height/2;
+    
+    var x = pos.x - cx;
+    var y = -pos.y + cy;
+    
+    return Math.atan2(x, y);
+  };
+  
+  
+  function calculateTorque(pos) {
+    var theta = pendulum.getTheta();
+    var ang = pos2angle(pos);
+    
+    // find out the dtheta...
+    if ((ang - theta) < Math.PI) {
+      return ang - theta;
+    } else {
+      return 0.0;
+    };
+  };
+  
+  
+  $('#layer1').mousedown(function(e) {
+    var pos = getMousePos(e, layer1);
+    torque = calculateTorque(pos);
+    
+    console.log(pos2angle(pos));
+    
+    $(this).bind('mousemove', function(e) {
+      var pos = getMousePos(e, layer1);
+      torque = calculateTorque(pos);
+    });
+  });
+  
+  
+  $('#layer1').mouseup(function(e) {
+    $(this).unbind('mousemove');
+    
+    torque = 0.0;
+  });
+  
+  
+  $('#layer1').mouseout(function(e) {
+    $(this).unbind('mousemove');
+    
+    torque = 0.0;
+  });*/
   
 });
