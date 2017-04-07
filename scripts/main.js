@@ -91,7 +91,7 @@ $(document).ready(function() {
     $('.slider-w').val(1000);
     $('.slider-b').val(500);
     $('.slider-d').val(1000);
-    $('.slider-dt').val(300);
+    $('.slider-dt').val(100);
     
     t = 0.0;
     tscale = 1.0;
@@ -194,7 +194,7 @@ $(document).ready(function() {
   });
   
   $('.slider-dt').on('input change', function() {
-      tscale = Math.pow(1.01, 300-$(this).val());
+      tscale = Math.pow(1.03271, 100-$(this).val());
       update();
   });
   
