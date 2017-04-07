@@ -40,6 +40,7 @@ var Pendulum = (function() {
     this.getState = function() { return x; };
     this.setState = function(nx) { x = nx; };
     this.getTheta = function() { return x[0]; };
+    this.setTheta = function(th) { this.setState([th, 0.0]); };
     this.getDTheta = function() { return x[1]; };
     this.getA = function() { return A; };
     this.setA = function(z) { A = Amax * z; };
@@ -87,13 +88,15 @@ var Pendulum = (function() {
     };
     
     
-    //! Calculate derivatives of the state variables
+    /** Calculate derivatives of the state variables
+     * State inputs are: [A, w, b, d, pull angle ]
+    */
     this.dxfun = function(t, u, x) {
       var dx = [0, 0];
       
       // calculate derivatives
       dx[0] = x[1];
-      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) + (3.0 * (k*u[4] - u[3] * x[1])) / (m*l*l);
+      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0*u[3]*x[1])/(m*l*l) + 0*k*(u[4]-x[0])/(m*l*l);
       
       return dx;
     };

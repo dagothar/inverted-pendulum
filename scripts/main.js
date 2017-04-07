@@ -25,7 +25,7 @@ $(document).ready(function() {
     theta0:   0.05,
     dtheta0:  0.0,
     m:        1.0,
-    l:        0.5,
+    l:        1.0,
     g:        9.81,
     Amax:     0.1,
     wmax:     70.0,
@@ -79,6 +79,19 @@ $(document).ready(function() {
   };
   
   
+  function resetParameters() {
+	  $('#parameter-theta0').val(defaultParams.theta0);
+	  $('#parameter-dtheta0').val(defaultParams.dtheta0);
+	  $('#parameter-m').val(defaultParams.m);
+	  $('#parameter-l').val(defaultParams.l);
+	  $('#parameter-g').val(defaultParams.g);
+	  $('#parameter-Amax').val(defaultParams.Amax);
+	  $('#parameter-wmax').val(defaultParams.wmax);
+	  $('#parameter-dmax').val(defaultParams.dmax);
+	  $('#parameter-k').val(defaultParams.k);
+  };
+  
+  
   function reset() {
     clearInterval(stepTimer);
     running = false;
@@ -114,8 +127,8 @@ $(document).ready(function() {
   };
   
   
+  resetParameters();
   reset();
-  
   
   
   
@@ -201,20 +214,12 @@ $(document).ready(function() {
   
   $('.button-params').click(function() {
     if (!running) {
-      $('#parameter-theta0').val(defaultParams.theta0);
-      $('#parameter-dtheta0').val(defaultParams.dtheta0);
-      $('#parameter-m').val(defaultParams.m);
-      $('#parameter-l').val(defaultParams.l);
-      $('#parameter-g').val(defaultParams.g);
-      $('#parameter-Amax').val(defaultParams.Amax);
-      $('#parameter-wmax').val(defaultParams.wmax);
-      $('#parameter-dmax').val(defaultParams.dmax);
-      $('#parameter-k').val(defaultParams.k);
+      resetParameters();
     }
   });
   
   
-  /*function pos2angle(pos) {
+  function pos2angle(pos) {
     var cx = layer1.width/2;
     var cy = layer1.height/2;
     
@@ -238,16 +243,22 @@ $(document).ready(function() {
   };
   
   
-  $('#layer1').mousedown(function(e) {
+  function pullPendulum(e) {
     var pos = getMousePos(e, layer1);
-    torque = calculateTorque(pos);
+    var angle = pos2angle(pos);
+    console.log(angle);
     
-    console.log(pos2angle(pos));
+    if (!running) {
+      pendulum.setTheta(angle);
+      update();
+    }
+  };
+  
+  
+  $('#layer1').mousedown(function(e) {
+    pullPendulum(e);
     
-    $(this).bind('mousemove', function(e) {
-      var pos = getMousePos(e, layer1);
-      torque = calculateTorque(pos);
-    });
+    $(this).bind('mousemove', pullPendulum);
   });
   
   
@@ -262,6 +273,6 @@ $(document).ready(function() {
     $(this).unbind('mousemove');
     
     torque = 0.0;
-  });*/
+  });
   
 });
