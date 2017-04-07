@@ -34,6 +34,8 @@ $(document).ready(function() {
   };
   
   var t = 0.0;
+  var dt = 0.005;
+  var tscale = 1.0;
   var pendulum = undefined;
   var render = undefined;
   var stepTimer = undefined;
@@ -54,6 +56,7 @@ $(document).ready(function() {
     $('.omega').text(pendulum.getW().toFixed(3) + ' [rad/s]');
     $('.beta').text(pendulum.getB().toFixed(3) + ' [rad]');
     $('.damping').text(pendulum.getD().toFixed(3) + ' [kg m²/s]');
+    $('.dt').text('x ' + tscale.toFixed(3));
     
     render.render(pendulum);
   };
@@ -88,6 +91,7 @@ $(document).ready(function() {
     $('.slider-w').val(1000);
     $('.slider-b').val(500);
     $('.slider-d').val(1000);
+    $('.slider-dt').val(300);
     
     t = 0.0;
     
@@ -123,9 +127,9 @@ $(document).ready(function() {
     var d = 0.001 * $('.slider-d').val();
     var M = torque; // torque
     
-    dt = 0.005;
-    t += dt;
-    pendulum.step(t, [A, w, b, d, M], dt);
+    var dts = dt / tscale;
+    t += dts;
+    pendulum.step(t, [A, w, b, d, M], dts);
     
     update();
   };  
@@ -186,6 +190,11 @@ $(document).ready(function() {
       pendulum.setD(0.001 * $(this).val());
       update();
     }
+  });
+  
+  $('.slider-dt').on('input change', function() {
+      tscale = Math.pow(1.01, 300-$(this).val());
+      update();
   });
   
   
