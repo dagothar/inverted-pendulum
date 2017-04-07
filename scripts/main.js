@@ -13,14 +13,14 @@ $(document).ready(function() {
   var layer1 = $('#layer1').get(0);
   
   var defaultParams = {
-    theta0:   0.0,
+    theta0:   0.05,
     dtheta0:  0.0,
     m:        1.0,
     l:        0.5,
     g:        9.81,
     Amax:     0.1,
     wmax:     70.0,
-    dmax:     0.1
+    dmax:     1
   };
   
   var t = 0.0;
@@ -32,13 +32,17 @@ $(document).ready(function() {
   
   //! Updates the model info
   function update() {
-    $('#time').text(t.toFixed(2) + ' [s]');
-    $('#theta').text(pendulum.getTheta().toFixed(3) + ' [rad]');
+    var theta = pendulum.getTheta(); // 180.0 * pendulum.getTheta() / Math.PI;
+    var dtheta = pendulum.getDTheta(); // 180.0 * pendulum.getDTheta() / Math.PI;
     
-    $('.amplitude').text(pendulum.getA().toFixed(3));
-    $('.omega').text(pendulum.getW().toFixed(3));
-    $('.beta').text(pendulum.getB().toFixed(3));
-    $('.damping').text(pendulum.getD().toFixed(3));
+    $('#time').text(t.toFixed(2) + ' [s]');
+    $('#theta').text(theta.toFixed(3) + ' [rad]'); // °
+    $('#dtheta').text(dtheta.toFixed(3) + ' [rad/s]');
+    
+    $('.amplitude').text(pendulum.getA().toFixed(3) + ' [m]');
+    $('.omega').text(pendulum.getW().toFixed(3) + ' [rad/s]');
+    $('.beta').text(pendulum.getB().toFixed(3) + ' [rad]');
+    $('.damping').text(pendulum.getD().toFixed(3) + ' [kg m²/s]');
     
     render.render(pendulum);
   };

@@ -17,6 +17,7 @@ var Render = (function() {
       ctx.save();
       
       ctx.lineWidth = 3;
+      ctx.fillStyle = 'rgb(0, 0, 0)';
       
       ctx.translate(x, y);
       
@@ -25,6 +26,9 @@ var Render = (function() {
       ctx.lineTo(rx + length*Math.sin(theta), -ry - length*Math.cos(theta));
       ctx.stroke();
       ctx.closePath();
+      
+      ctx.arc(rx + length*Math.sin(theta), -ry - length*Math.cos(theta), 5, 0, 2*Math.PI);
+      ctx.fill();
       
       ctx.restore();
     };
@@ -86,11 +90,43 @@ var Render = (function() {
       
       ctx1.font = '20px Sans';
       var Rinner = 175;
+      var Rinner2 = 200;
       var Rmiddle = 225;
+      var Router2 = 250;
       var Router = 275;
       
       // setup
       var scale = 150.0 / model.getLength();
+      
+      /* draw grid */
+      ctx1.save();
+        ctx1.lineWidth = 2;
+        ctx1.strokeStyle = 'rgb(200, 200, 200)';
+        ctx1.fillStyle = 'rgb(200, 200, 200)';
+        ctx1.font = '10px Sans';
+        
+        ctx1.beginPath(); ctx1.arc(cx, cy, Rinner, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+        ctx1.beginPath(); ctx1.arc(cx, cy, Rmiddle, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+        ctx1.beginPath(); ctx1.arc(cx, cy, Router, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+        
+        ctx1.lineWidth = 1;
+        ctx1.beginPath(); ctx1.arc(cx, cy, Rinner2, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+        ctx1.beginPath(); ctx1.arc(cx, cy, Router2, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
+        
+        for (var i = 0; i < 36; ++i) {
+          var t = i * Math.PI / 18;
+          ctx1.beginPath();
+            ctx1.moveTo(cx+Rinner*Math.sin(t), cy-Rinner*Math.cos(t));
+            ctx1.lineTo(cx+Router*Math.sin(t), cy-Router*Math.cos(t));
+          ctx1.closePath();
+          ctx1.stroke();
+          
+          var a = Math.round(t * 180/Math.PI);
+          a = (a > 180) ? a-360 : a;
+          ctx1.fillText(a, cx+Router*Math.sin(t), cy-Router*Math.cos(t));
+        }
+
+      ctx1.restore();
       
       /* draw cart */
       ctx1.save();
@@ -103,7 +139,7 @@ var Render = (function() {
         ctx1.stroke();
         
         ctx1.lineWidth = 2;
-        ctx1.setLineDash([3, 12]);
+        ctx1.setLineDash([5, 10]);
         ctx1.beginPath();
         ctx1.moveTo(0, -Router);
         ctx1.lineTo(0, Router);
@@ -129,17 +165,6 @@ var Render = (function() {
         ctx1.stroke();
         ctx1.fillText('θ', cx+Router*Math.sin(model.getTheta()), cy-Router*Math.cos(model.getTheta()));
       ctx1.restore();    
-      
-      /* draw grid */
-      ctx1.save();
-        ctx1.lineWidth = 2;
-        ctx1.setLineDash([2, 4]);
-        
-        ctx1.beginPath(); ctx1.arc(cx, cy, Rinner, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
-        ctx1.beginPath(); ctx1.arc(cx, cy, Rmiddle, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
-        ctx1.beginPath(); ctx1.arc(cx, cy, Router, 0, 2*Math.PI); ctx1.closePath(); ctx1.stroke();
-
-      ctx1.restore();
       
       /* draw Uef */
       drawUef(ctx1, model, cx, cy, Rmiddle, Router-Rmiddle, 360);
