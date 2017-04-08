@@ -11,6 +11,9 @@ var Pendulum = (function() {
     var dmax;
     var kpull;
     var dpull;
+    var kpsi;
+    var Tpsi;
+    var dpsi;
     
     // parameters
     this.setParameters = function(params) {
@@ -24,6 +27,9 @@ var Pendulum = (function() {
       dmax = params.dmax;
       kpull = params.kpull;
       dpull = params.dpull;
+      kpsi = params.kpsi;
+      Tpsi = params.Tpsi;
+      dpsi = params.Tpsi;
     };
     
     this.setParameters(params);
@@ -44,6 +50,9 @@ var Pendulum = (function() {
     this.getTheta = function() { return x[0]; };
     this.setTheta = function(th) { this.setState([th, 0.0]); };
     this.getDTheta = function() { return x[1]; };
+    this.getPsi = function() { return x[2]; };
+    this.setPsi = function(p) { x[2] = p; };
+    this.getDPsi = function() { return x[3]; };
     this.getA = function() { return A; };
     this.setA = function(z) { A = Amax * z; };
     this.getW = function() { return w; };
@@ -73,14 +82,14 @@ var Pendulum = (function() {
     
     
     //! Calculates the potential as the function of angle.
-    this.getUg = function(psi) {
-      return 0.5*g*l*m*Math.cos(psi);
+    this.getUg = function(a) {
+      return 0.5*g*l*m*Math.cos(a);
     };
     
     
     //! Calculates the effective potential as the function of angle.
-    this.getUef = function(psi) {
-      return 0.5*g*l*m*Math.cos(psi) - 3.0/32.0 * A*A*m*w*w*Math.cos(2*(psi-b));
+    this.getUef = function(a) {
+      return 0.5*g*l*m*Math.cos(a) - 3.0/32.0 * A*A*m*w*w*Math.cos(2*(a-b));
     };
     
     
@@ -102,9 +111,19 @@ var Pendulum = (function() {
         etheta = Math.PI - etheta;
       }
       
-      // calculate derivatives
+      // calculate theta derivatives
       dx[0] = x[1];
       dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0*u[3]*x[1])/(m*l*l) + 3.0*u[4]*(kpull*etheta - dpull*x[1])/(m*l*l);
+      
+      // calculate the psi angle direction and magnitude
+      var ptheta = x[0]-x[2];
+      if (Math.abs(ptheta) > Math.PI) {
+        ptheta = Math.PI - ptheta;
+      }
+      
+      // calculate psi (filtered theta) derivatives
+      dx[2] = x[3];
+      dx[3] = (kpsi*ptheta - dpsi*x[3]) / Tpsi;
       
       return dx;
     };
@@ -129,6 +148,9 @@ var Pendulum = (function() {
       // take care of bounds
       if (x[0] < -Math.PI) x[0] = 2*Math.PI - x[0];
       if (x[0] > Math.PI) x[0] = -2*Math.PI + x[0];
+      
+      if (x[2] < -Math.PI) x[2] = 2*Math.PI - x[2];
+      if (x[2] > Math.PI) x[2] = -2*Math.PI + x[2];
       
       rx = A * Math.sin(b) * Math.sin(w*t+p);
       ry = A * Math.cos(b) * Math.sin(w*t+p);

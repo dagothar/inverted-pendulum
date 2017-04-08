@@ -5,7 +5,6 @@
   <title>Inverted pendulum</title>
   
   <link rel="stylesheet" href="vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="vendor/spectrum/spectrum.css"/>
   <link rel="stylesheet" href="styles/main.css"/>
 </head>
 
@@ -81,7 +80,7 @@
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">d<sub>max</sub> [kg m<sup>2</sup>/s]</label>
+                <label class="control-label col-sm-6">d<sub>max</sub> [Ns]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-dmax" value="0">
                 </div>
@@ -95,9 +94,30 @@
               </div>
               
               <div class="form-group">
-                <label class="control-label col-sm-6">d<sub>pull</sub> [kg m<sup>2</sup>/s]</label>
+                <label class="control-label col-sm-6">d<sub>pull</sub> [Ns]</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" id="parameter-dpull" value="1">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label col-sm-6">k<sub>ψ</sub></label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="parameter-kpsi" value="1">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label col-sm-6">T<sub>ψ</sub></label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="parameter-Tpsi" value="1">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label col-sm-6">d<sub>ψ</sub></label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="parameter-dpsi" value="1">
                 </div>
               </div>
               
@@ -174,9 +194,10 @@
           <div class="panel-heading">Results</div>
           
           <div class="panel-body">
-            <p><b>t</b><span id="time" class="pull-right">0 [s]</span></p>
+            <p><b>t</b><span id="time" class="pull-right text-primary">0 [s]</span></p>
             <p><b>θ</b> <span id="theta" class="pull-right text-primary">0<sup>o</sup></span></p>
             <p><b>dθ</b> <span id="dtheta" class="pull-right text-primary">0 [rad/s]</span></p>
+            <p><b>ψ</b> <span id="psi" class="pull-right text-primary">0 [rad]</span></p>
             <!--p>T <span id="temperature" class="pull-right text-danger">0 [C]</span></p>
             <br/>
             <p>q1 <span id="q1" class="pull-right text-primary">0 [kg/s]</span></p>

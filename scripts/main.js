@@ -31,7 +31,10 @@ $(document).ready(function() {
     wmax:     70.0,
     dmax:     0.1,
     kpull:    25.0,
-    dpull:    5.0
+    dpull:    5.0,
+    kpsi:     0.25,
+    Tpsi:     1.0,
+    dpsi:     1.0
   };
   
   var t = 0.0;
@@ -49,15 +52,17 @@ $(document).ready(function() {
   function update() {
     var theta = pendulum.getTheta(); // 180.0 * pendulum.getTheta() / Math.PI;
     var dtheta = pendulum.getDTheta(); // 180.0 * pendulum.getDTheta() / Math.PI;
+    var psi = pendulum.getPsi(); // 180.0 * pendulum.getDTheta() / Math.PI;
     
     $('#time').text(t.toFixed(2) + ' [s]');
     $('#theta').text(theta.toFixed(3) + ' [rad]'); // °
     $('#dtheta').text(dtheta.toFixed(3) + ' [rad/s]');
+    $('#psi').text(psi.toFixed(3) + ' [rad]');
     
     $('.amplitude').text(pendulum.getA().toFixed(3) + ' [m]');
     $('.omega').text(pendulum.getW().toFixed(3) + ' [rad/s]');
     $('.beta').text(pendulum.getB().toFixed(3) + ' [rad]');
-    $('.damping').text(pendulum.getD().toFixed(3) + ' [kg m²/s]');
+    $('.damping').text(pendulum.getD().toFixed(3) + ' [Ns]');
     $('.dt').text('1 : ' + tscale.toFixed(2));
     
     render.render(pendulum);
@@ -77,6 +82,9 @@ $(document).ready(function() {
     params.dmax = parseFloat($('#parameter-dmax').val());
     params.kpull = parseFloat($('#parameter-kpull').val());
     params.dpull = parseFloat($('#parameter-dpull').val());
+    params.kpsi = parseFloat($('#parameter-kpsi').val());
+    params.Tpsi = parseFloat($('#parameter-Tpsi').val());
+    params.dpsi = parseFloat($('#parameter-dpsi').val());
     
     return params;
   };
@@ -93,6 +101,9 @@ $(document).ready(function() {
 	  $('#parameter-dmax').val(defaultParams.dmax);
 	  $('#parameter-kpull').val(defaultParams.kpull);
 	  $('#parameter-dpull').val(defaultParams.dpull);
+    $('#parameter-kpsi').val(defaultParams.kpsi);
+	  $('#parameter-Tpsi').val(defaultParams.Tpsi);
+	  $('#parameter-dpsi').val(defaultParams.dpsi);
   };
   
   
@@ -115,7 +126,7 @@ $(document).ready(function() {
     
     var params = getParameters();
     
-    var x0 = [params.theta0, params.dtheta0];
+    var x0 = [params.theta0, params.dtheta0, params.theta0, params.dtheta0];
     
     var solver = new RK4();
     
@@ -236,10 +247,11 @@ $(document).ready(function() {
   function pullPendulum(e) {
     var pos = getMousePos(e, layer1);
     var angle = pos2angle(pos);
-    console.log(angle);
+    //console.log(angle);
     
     if (!running) {
       pendulum.setTheta(angle);
+      pendulum.setPsi(angle);
       update();
     } else {
       pull = 1;

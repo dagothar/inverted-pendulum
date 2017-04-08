@@ -168,10 +168,23 @@ var Render = (function() {
         ctx1.closePath();
         ctx1.stroke();
         ctx1.fillText('θ', cx+Router*Math.sin(model.getTheta()), cy-Router*Math.cos(model.getTheta()));
-      ctx1.restore();    
-      
+      ctx1.restore(); 
+
       /* draw Uef */
       drawUef(ctx1, model, cx, cy, Rmiddle, Router-Rmiddle, 360);
+      
+      /* draw psi angle indicator */
+      ctx1.save();
+        ctx1.lineWidth = 1.5;
+        ctx1.strokeStyle = 'rgb(0, 0, 255)';
+        ctx1.fillStyle = 'rgb(0, 0, 255)';
+        ctx1.beginPath();
+        ctx1.moveTo(cx, cy);
+        ctx1.lineTo(cx+Router*Math.sin(model.getPsi()), cy-Router*Math.cos(model.getPsi()));
+        ctx1.closePath();
+        ctx1.stroke();
+        ctx1.fillText('ψ', cx+(Router+10)*Math.sin(model.getPsi()), cy-(Router+10)*Math.cos(model.getPsi()));
+      ctx1.restore();
       
     };
   };
