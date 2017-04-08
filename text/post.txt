@@ -1,0 +1,7 @@
+It is the nature of things that they strive to reach the state of the lowest energy possible. The stone cast into air will fall to ground, because this is where its potential energy is at the minimum. The surface of water is flat, because the surface tension at this state is minimized. (Let's disregard the stones reaching orbit and stormy lakes for now.)
+
+A pendulum will always stop at the bottom.
+
+Actually, that's not quite right. The nature is lazy, and will not care to explore all of the possibilities to find the absolute minimum. It is usually quite content with smaller, local minimums, where the surrounding landscape is every bit so higher whichever direction you look. Such places are just good enough for the nature.
+
+Remember the pendulum? It has two balance points: the stable one at the bottom, and an unstable one at the top. You most certainly tried to balance a pencil on its tip at some point in your life.
