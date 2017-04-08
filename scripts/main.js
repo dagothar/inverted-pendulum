@@ -32,8 +32,8 @@ $(document).ready(function() {
     dmax:     0.1,
     kpull:    25.0,
     dpull:    5.0,
-    kpsi:     2.0,
-    Tpsi:     3.0
+    kpsi:     2.5,
+    Tpsi:     5.0
   };
   
   var t = 0.0;
