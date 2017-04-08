@@ -96,9 +96,15 @@ var Pendulum = (function() {
     this.dxfun = function(t, u, x) {
       var dx = [0, 0];
       
+      // calculate the pulling angle direction and magnitude
+      var etheta = u[5]-x[0];
+      if (Math.abs(etheta) > Math.PI) {
+        etheta = Math.PI - etheta;
+      }
+      
       // calculate derivatives
       dx[0] = x[1];
-      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0*u[3]*x[1])/(m*l*l) + 3.0*u[4]*(kpull*(u[5]-x[0]) - dpull*x[1])/(m*l*l);
+      dx[1] = 3.0 * (-u[0]*u[1]*u[1] * Math.sin(u[1]*t+p) * Math.sin(u[2]-x[0]) + g*Math.sin(x[0])) / (2.0*l) - (3.0*u[3]*x[1])/(m*l*l) + 3.0*u[4]*(kpull*etheta - dpull*x[1])/(m*l*l);
       
       return dx;
     };
