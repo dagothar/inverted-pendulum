@@ -107,9 +107,16 @@ var Pendulum = (function() {
       
       // calculate the pulling angle direction and magnitude
       var etheta = u[5]-x[0];
-      if (Math.abs(etheta) > Math.PI) {
-        etheta = Math.PI - etheta;
+      if (etheta > Math.PI) {
+        etheta = -2*Math.PI + etheta;
       }
+      if (etheta < -Math.PI) {
+        etheta = 2*Math.PI + etheta;
+      }
+      while (etheta > 2*Math.PI) etheta -= 2*Math.PI;
+      while (etheta < -2*Math.PI) etheta += 2*Math.PI;
+      
+      //console.log(etheta);
       
       // calculate theta derivatives
       dx[0] = x[1];
@@ -117,9 +124,16 @@ var Pendulum = (function() {
       
       // calculate the psi angle direction and magnitude
       var ptheta = x[0]-x[2];
-      if (Math.abs(ptheta) > Math.PI) {
-        ptheta = Math.PI - ptheta;
+      if (ptheta > Math.PI) {
+        ptheta = -2*Math.PI + ptheta;
       }
+      if (ptheta < -Math.PI) {
+        ptheta = 2*Math.PI + ptheta;
+      }
+      while (ptheta > 2*Math.PI) ptheta -= 2*Math.PI;
+      while (ptheta < -2*Math.PI) ptheta += 2*Math.PI;
+      
+      //console.log(ptheta);
       
       // calculate psi (filtered theta) derivatives
       dx[2] = x[3];
@@ -146,11 +160,11 @@ var Pendulum = (function() {
       x = solver.solve(this.dxfun, t, [A, w, b, d, pull, angle], x, dt);
 
       // take care of bounds
-      if (x[0] < -Math.PI) x[0] = 2*Math.PI - x[0];
-      if (x[0] > Math.PI) x[0] = -2*Math.PI + x[0];
+      if (x[0] < -Math.PI) x[0] += 2*Math.PI;
+      if (x[0] > Math.PI) x[0] -= 2*Math.PI;
       
-      if (x[2] < -Math.PI) x[2] = 2*Math.PI - x[2];
-      if (x[2] > Math.PI) x[2] = -2*Math.PI + x[2];
+      if (x[2] < -Math.PI) x[2] += 2*Math.PI;
+      if (x[2] > Math.PI) x[2] -= 2*Math.PI;
       
       rx = A * Math.sin(b) * Math.sin(w*t+p);
       ry = A * Math.cos(b) * Math.sin(w*t+p);
