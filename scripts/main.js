@@ -32,9 +32,8 @@ $(document).ready(function() {
     dmax:     0.1,
     kpull:    25.0,
     dpull:    5.0,
-    kpsi:     0.25,
-    Tpsi:     1.0,
-    dpsi:     1.0
+    kpsi:     2.0,
+    Tpsi:     3.0
   };
   
   var t = 0.0;
@@ -84,7 +83,6 @@ $(document).ready(function() {
     params.dpull = parseFloat($('#parameter-dpull').val());
     params.kpsi = parseFloat($('#parameter-kpsi').val());
     params.Tpsi = parseFloat($('#parameter-Tpsi').val());
-    params.dpsi = parseFloat($('#parameter-dpsi').val());
     
     return params;
   };
@@ -103,7 +101,6 @@ $(document).ready(function() {
 	  $('#parameter-dpull').val(defaultParams.dpull);
     $('#parameter-kpsi').val(defaultParams.kpsi);
 	  $('#parameter-Tpsi').val(defaultParams.Tpsi);
-	  $('#parameter-dpsi').val(defaultParams.dpsi);
   };
   
   

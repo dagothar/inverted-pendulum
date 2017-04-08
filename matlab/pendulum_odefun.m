@@ -12,7 +12,7 @@ m = p(7);
 
 %% Compute derivatives
 dx(1, 1) = x(2);
-dx(2, 1) = (3*A*w^2 * cos(w*t) * sin(b-x(1)) + 3*g*sin(x(1))) / (2*l) - 3*d/(m*l^2) * x(2);
+dx(2, 1) = (-3*A*w^2 * sin(w*t) * sin(b-x(1)) + 3*g*sin(x(1))) / (2*l) - 3*d/(m*l^2) * x(2);
 
 end
 

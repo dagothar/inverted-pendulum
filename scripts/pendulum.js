@@ -13,7 +13,6 @@ var Pendulum = (function() {
     var dpull;
     var kpsi;
     var Tpsi;
-    var dpsi;
     
     // parameters
     this.setParameters = function(params) {
@@ -29,7 +28,6 @@ var Pendulum = (function() {
       dpull = params.dpull;
       kpsi = params.kpsi;
       Tpsi = params.Tpsi;
-      dpsi = params.Tpsi;
     };
     
     this.setParameters(params);
@@ -52,7 +50,6 @@ var Pendulum = (function() {
     this.getDTheta = function() { return x[1]; };
     this.getPsi = function() { return x[2]; };
     this.setPsi = function(p) { x[2] = p; };
-    this.getDPsi = function() { return x[3]; };
     this.getA = function() { return A; };
     this.setA = function(z) { A = Amax * z; };
     this.getW = function() { return w; };
@@ -136,8 +133,7 @@ var Pendulum = (function() {
       //console.log(ptheta);
       
       // calculate psi (filtered theta) derivatives
-      dx[2] = x[3];
-      dx[3] = (kpsi*ptheta - dpsi*x[3]) / Tpsi;
+      dx[2] = kpsi*ptheta / Tpsi;
       
       return dx;
     };
